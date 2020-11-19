@@ -1,23 +1,18 @@
 import { S3Event } from "aws-lambda";
 import { AccountManager } from "../app/instrastructure/driven/accountManager/AccountManager";
-import { Instrumentation } from "../app/instrastructure/driven/instrumentation/Instrumentation";
 import { S3 } from "aws-sdk";
 import { closeAccount } from "../app/domain/closeAccount";
 import { s3Adaptor } from "../app/instrastructure/driving/s3Adaptor";
 
 describe("Close Accounts via S3", () => {
-  const instrumentation: Instrumentation = {
-    closedAccount: () => Promise.resolve(),
-    removedMeters: () => Promise.resolve(),
-  };
+
 
   let accountWithNoMeters: AccountManager;
 
   beforeEach(() => {
     accountWithNoMeters = {
       closeAccount: jest.fn().mockResolvedValue(undefined),
-      getActiveMeters: jest.fn().mockResolvedValue([]),
-      removeMeter: jest.fn().mockResolvedValue(undefined),
+      addAccount: jest.fn().mockResolvedValue(undefined)
     };
   });
 
@@ -26,7 +21,6 @@ describe("Close Accounts via S3", () => {
 
     const handler = s3Adaptor(closeAccount({
       accountManager: accountWithNoMeters,
-      instrumentation,
     }), mocks3);
 
     const s3PutEvent = createS3Event("test-bucket-name", "test-object-key");

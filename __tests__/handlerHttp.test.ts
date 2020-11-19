@@ -1,29 +1,23 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { AccountManager } from "../app/instrastructure/driven/accountManager/AccountManager";
-import { Instrumentation } from "../app/instrastructure/driven/instrumentation/Instrumentation";
 import { apiGatewayAdapter } from "../app/instrastructure/driving/apiGatewayAdapter";
-import { closeAccount } from "../app/domain/closeAccount";
+import {addAccount} from "../app/domain/addAccount";
 
 describe("Close Accounts via API Gateway", () => {
-  const instrumentation: Instrumentation = {
-    closedAccount: () => Promise.resolve(),
-    removedMeters: () => Promise.resolve(),
-  };
+
 
   let accountWithNoMeters: AccountManager;
 
   beforeEach(() => {
     accountWithNoMeters = {
       closeAccount: jest.fn().mockResolvedValue(undefined),
-      getActiveMeters: jest.fn().mockResolvedValue([]),
-      removeMeter: jest.fn().mockResolvedValue(undefined),
+      addAccount: jest.fn().mockResolvedValue(undefined),
     };
   });
 
   test("Account ID from HTTP passed account closer", async () => {
-    const handler = apiGatewayAdapter(closeAccount({
+    const handler = apiGatewayAdapter(addAccount({
       accountManager: accountWithNoMeters,
-      instrumentation,
     }));
 
     const deleteEvent: Partial<APIGatewayProxyEvent> = {

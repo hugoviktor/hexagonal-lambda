@@ -1,13 +1,15 @@
-import { CloseAccount, closeAccount } from "./app/domain/closeAccount";
 import { apiGatewayAdapter } from "./app/instrastructure/driving/apiGatewayAdapter";
-import { StubAmazingEnergyClient } from "./app/instrastructure/driven/accountManager/StubAmazingEnergyClient";
-import { StubInstrumentation } from "./app/instrastructure/driven/instrumentation/StubInstrumentation";
+import { DynamoDbAccountManager } from "./app/instrastructure/driven/accountManager/DynamoDbAccountManager";
+import {addAccount, AddAccount} from "./app/domain/addAccount";
 
 // Instantiate core functionality with its dependencies
-const accountCloser: CloseAccount = closeAccount({
+/*const accountCloser: CloseAccount = closeAccount({
   instrumentation: new StubInstrumentation(), // Implements Instrumentation interface (port)
-  accountManager: new StubAmazingEnergyClient(), // Implements AccountManager interface (port)
-});
+  accountManager: new DynamoDbAccountManager(), // Implements AccountManager interface (port)
+});*/
 
+const accountCreator: AddAccount = addAccount({
+  accountManager: new DynamoDbAccountManager()
+});
 // Initialise the handler with the apiGatewayAdaptor which depends on the CloseAccount port
-export const handler = apiGatewayAdapter(accountCloser);
+export const handler = apiGatewayAdapter(accountCreator);
