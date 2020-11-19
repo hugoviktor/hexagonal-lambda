@@ -21,7 +21,7 @@ export const apiGatewayAdapter = (next: AddAccount): APIGatewayProxyHandler => a
     const customer = body["customer"];
     const balance  = body["balance"];
     await next(currency,customer, balance);
-    return response("Successfully closed account");
+    return response("Successfully added account");
   } catch (err) {
     console.error(err);
     return response("Unknown error", 500);
