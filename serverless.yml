@@ -31,14 +31,14 @@ functions:
       - httpApi:
           method: POST
           path: /v1/accounts
-  delivery-reporting:
+  add-account-sqs:
     handler: handlerSqs.handler
     description: Service to get new accounts from SQS
     events:
       - sqs:
           arn:
             Fn::GetAtt: [ NewSQSQueue, Arn ]
-          batchSize: 10
+          batchSize: 5
 
 resources:
   Resources:
