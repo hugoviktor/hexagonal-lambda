@@ -2,11 +2,7 @@ import { apiGatewayAdapter } from "./app/instrastructure/driving/apiGatewayAdapt
 import { DynamoDbAccountManager } from "./app/instrastructure/driven/accountManager/DynamoDbAccountManager";
 import {addAccount, AddAccount} from "./app/domain/addAccount";
 
-// Instantiate core functionality with its dependencies
-/*const accountCloser: CloseAccount = closeAccount({
-  instrumentation: new StubInstrumentation(), // Implements Instrumentation interface (port)
-  accountManager: new DynamoDbAccountManager(), // Implements AccountManager interface (port)
-});*/
+
 
 const accountCreator: AddAccount = addAccount({
   accountManager: new DynamoDbAccountManager()
